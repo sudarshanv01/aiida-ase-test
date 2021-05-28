@@ -36,7 +36,7 @@ class Ase3Parser(Parser):
 
         :returns: an exit code, if parsing fails (or nothing if parsing succeeds)
         """
-        output_filename = self.node.inputs.output_filename.value#self.node.get_option('output_filename')
+        output_filename = self.inputs.output_filename.value#self.node.get_option('output_filename')
 
         # Check that folder content is as expected
         files_retrieved = self.retrieved.list_object_names()

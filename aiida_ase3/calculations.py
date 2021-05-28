@@ -14,14 +14,16 @@ DiffParameters = DataFactory('ase3')
 
 class Ase3Calculation(CalcJob):
     """
-    ASE calculation which operates on two possible modes
+    ASE calculation which operates currently on:
     1. inout: This mode takes the input file and reads in 
               the output file, nothing fancy does what it is 
               asked to do - Thanks to Leopold for this idea!
+
+    Other possibilities: 
     2. gpaw-ready: A gpaw compatibility based setup which 
               will automatically take care of a bunch of parsing
-              and input output options, this is in keeping with how
-              ase is written (?) - better for gpaw good for all else?
+              and input output options
+
     """
     @classmethod
     def define(cls, spec):
@@ -37,10 +39,10 @@ class Ase3Calculation(CalcJob):
         spec.inputs['metadata']['options']['parser_name'].default = 'ase3'
 
         # new ports
-        spec.input('metadata.options.output_filename', valid_type=str, default='aiida.txt')
+        spec.input('metadata.options.output_filename', valid_type=str, default='aiida.out')
         spec.input('operation_mode', valid_type=Str, default=lambda: Str('inout'))
         spec.input('input_file', valid_type=SinglefileData, help='Input file which will be used', required=False)
-        spec.input('output_filename', valid_type=Str, default=lambda: Str('aiida.out'), help='AiiDA output file by default')
+        spec.input('output_filename', valid_type=Str, default=lambda: Str('aiida.txt'), help='AiiDA output file by default')
 
         # outputs
         spec.output('ase3_output', valid_type=SinglefileData, help='Output file which will be read in')
@@ -71,6 +73,6 @@ class Ase3Calculation(CalcJob):
         calcinfo.local_copy_list = [
             (self.inputs.input_file.uuid, self.inputs.input_file.filename, self.inputs.input_file.filename),
         ]
-        calcinfo.retrieve_list = [self.metadata.options.output_filename]
+        calcinfo.retrieve_list = [self.metadata.options.output_filename, self.inputs.output_filename.value]
 
         return calcinfo

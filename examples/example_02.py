@@ -26,21 +26,20 @@ def test_run(ase3_code):
     # Prepare input parameters
     SinglefileData = DataFactory('singlefile')
     input_file = SinglefileData(
-        file=path.join(INPUT_DIR, 'run_gpaw.py'))
+        file=path.join(INPUT_DIR, 'run_vibrations.py'))
 
     # set up calculation
     inputs = {
         'code': ase3_code,
         'input_file': input_file,
         'operation_mode':Str('inout'),
-        'output_filename':Str('aiida.txt'),
         'metadata': {
             # 'dry_run':True,
             # 'store_provenance':False,
             'description': 'Test job submission with the aiida_ase3 plugin',
             'options': {
                 'max_wallclock_seconds': 120,
-                # 'resources':{'num_machines': 1},
+                'resources':{'num_machines': 1},
             },
         },
     }
